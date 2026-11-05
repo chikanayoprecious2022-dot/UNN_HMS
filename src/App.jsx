@@ -31,7 +31,7 @@ export default function App() {
 
   return (
     <Router>
-      <div className="min-h-screen overflow-hidden w-full flex flex-col bg-[#ebf1f1] text-slate-800 selection:bg-[#008080] selection:text-white">
+      <div className="min-h-screen w-full flex flex-col bg-[#ebf1f1] text-slate-800 selection:bg-[#008080] selection:text-white">
         <Navbar currentUser={currentUser} onLogout={handleLogout} />
 
         <main className="flex-1 w-full overflow-x-hidden">
