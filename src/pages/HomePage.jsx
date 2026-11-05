@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { db } from '../services/db';
-import { Bot, Calendar, ArrowRight, Clock, Award, CheckCircle2 } from 'lucide-react';
+import { api } from '../services/api';
+import { Bot, Calendar, ArrowRight } from 'lucide-react';
 
 export default function HomePage() {
   const [symptomInput, setSymptomInput] = useState('');
+  const [doctors, setDoctors] = useState([]);
   const navigate = useNavigate();
-  const doctors = db.getDoctors().slice(0, 4);
+
+  useEffect(() => {
+    api.getDoctors()
+      .then((data) => {
+        if (data.success && data.doctors) {
+          setDoctors(data.doctors.slice(0, 4));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const handleStartAi = (prompt) => {
     const q = prompt || symptomInput;
@@ -36,11 +46,11 @@ export default function HomePage() {
           {/* Core Dual Buttons */}
           <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
             <Link
-              to="/book"
+              to="/doctors"
               className="w-full sm:w-auto px-6 py-3 rounded-xl bg-white border-2 border-[#008080] text-[#008080] font-heading font-bold text-xs sm:text-sm hover:bg-[#ebf1f1] transition-all flex items-center justify-center gap-2"
             >
               <Calendar className="w-4 h-4 text-[#008080]" />
-              <span>Book Appointment Manually</span>
+              <span>Browse Doctors to Book</span>
             </Link>
 
             <Link
@@ -88,7 +98,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Featured Doctors Section */}
+      {/* Featured Doctors Section - With "Book Appointment" buttons */}
       <section className="max-w-5xl mx-auto px-4 space-y-6">
         <div className="flex items-center justify-between">
           <div>
@@ -103,10 +113,10 @@ export default function HomePage() {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {doctors.map((doc) => {
-            const dept = db.getDepartmentById(doc.department_id);
+            const docId = doc.id || doc.doctor_id;
             return (
               <div
-                key={doc.doctor_id}
+                key={docId}
                 className="bg-white p-4 rounded-xl border border-[#008080]/20 shadow-xs flex flex-col justify-between space-y-3"
               >
                 <div className="space-y-2">
@@ -116,7 +126,7 @@ export default function HomePage() {
                     className="w-full h-32 object-cover rounded-lg border border-[#008080]/15"
                   />
                   <div>
-                    <span className="text-[10px] font-bold uppercase text-[#008080]">{dept?.name}</span>
+                    <span className="text-[10px] font-bold uppercase text-[#008080]">{doc.department_name || 'General'}</span>
                     <h3 className="font-heading font-bold text-sm text-slate-900">{doc.name}</h3>
                     <p className="text-[11px] text-slate-500">${doc.consultation_fee} / consultation</p>
                   </div>
@@ -124,17 +134,16 @@ export default function HomePage() {
 
                 <div className="pt-2 border-t border-slate-100 flex gap-2">
                   <Link
-                    to={`/book?doctorId=${doc.doctor_id}`}
-                    className="flex-1 py-1.5 text-center bg-[#008080] hover:bg-[#006666] text-white text-xs font-bold rounded-lg transition-colors"
+                    to={`/book?doctorId=${docId}`}
+                    className="flex-1 py-1.5 text-center bg-[#008080] hover:bg-[#006666] text-white text-xs font-bold rounded-lg transition-colors shadow-2xs"
                   >
                     Book
                   </Link>
                   <Link
-                    to={`/ai-assistant?symptoms=${encodeURIComponent(doc.specialization)}`}
+                    to={`/doctors/${docId}`}
                     className="px-2.5 py-1.5 text-center bg-[#ebf1f1] text-[#008080] text-xs font-semibold rounded-lg hover:bg-teal-100 transition-colors"
-                    title="Consult AI about this doctor"
                   >
-                    Ask AI
+                    Profile
                   </Link>
                 </div>
               </div>

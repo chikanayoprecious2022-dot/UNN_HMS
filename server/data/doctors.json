@@ -1,0 +1,122 @@
+[
+  {
+    "id": 6,
+    "name": "fff",
+    "title": "Consultant Specialist",
+    "department_id": 1,
+    "specialization": "fff",
+    "experience_years": 7,
+    "consultation_fee": 30,
+    "bio": "ss",
+    "avatar_url": "https://res.cloudinary.com/u0squkwa/image/upload/v1793883978/unn-hms/doctors/tpaom3f201yozc1loa0f.png",
+    "available_days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "is_active": true,
+    "created_at": "2026-11-05T13:06:20.018023+00:00",
+    "doctor_id": 6,
+    "department_name": "Cardiology"
+  },
+  {
+    "id": 5,
+    "name": "sss",
+    "title": "Consultant Specialist",
+    "department_id": 1,
+    "specialization": "sss",
+    "experience_years": 7,
+    "consultation_fee": 30,
+    "bio": "sss",
+    "avatar_url": "https://res.cloudinary.com/u0squkwa/image/upload/v1793883935/unn-hms/doctors/xzc6gxdvuass5kxn9obh.png",
+    "available_days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "is_active": true,
+    "created_at": "2026-11-05T13:05:41.214996+00:00",
+    "doctor_id": 5,
+    "department_name": "Cardiology"
+  },
+  {
+    "id": 4,
+    "name": "Dr. Chen Wei",
+    "title": "Pediatric Specialist",
+    "department_id": 3,
+    "specialization": "Neonatal & Child Health",
+    "experience_years": 12,
+    "consultation_fee": 35,
+    "bio": "Passionate pediatrician with over a decade managing pediatric care.",
+    "avatar_url": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=400",
+    "available_days": [
+      "Tuesday",
+      "Wednesday",
+      "Friday"
+    ],
+    "is_active": true,
+    "created_at": "2026-11-05T11:32:42.446223+00:00",
+    "doctor_id": 4,
+    "department_name": "Pediatrics"
+  },
+  {
+    "id": 3,
+    "name": "Dr. Omar Hassan",
+    "title": "Senior Dental Consultant",
+    "department_id": 2,
+    "specialization": "Periodontology & Oral Surgery",
+    "experience_years": 6,
+    "consultation_fee": 20,
+    "bio": "Dedicated to preventative gum care and pediatric dental health.",
+    "avatar_url": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400",
+    "available_days": [
+      "Monday",
+      "Tuesday",
+      "Thursday"
+    ],
+    "is_active": true,
+    "created_at": "2026-11-05T11:32:42.446223+00:00",
+    "doctor_id": 3,
+    "department_name": "Dental"
+  },
+  {
+    "id": 2,
+    "name": "Dr. Layla Karim",
+    "title": "Lead Dental Surgeon",
+    "department_id": 2,
+    "specialization": "General Dentistry & Endodontics",
+    "experience_years": 8,
+    "consultation_fee": 25,
+    "bio": "Specialist in painless restorative dentistry and gum health.",
+    "avatar_url": "https://images.unsplash.com/photo-1594824813583-b9b5f33346b0?auto=format&fit=crop&q=80&w=400",
+    "available_days": [
+      "Sunday",
+      "Monday",
+      "Wednesday"
+    ],
+    "is_active": true,
+    "created_at": "2026-11-05T11:32:42.446223+00:00",
+    "doctor_id": 2,
+    "department_name": "Dental"
+  },
+  {
+    "id": 1,
+    "name": "klmdvfcklm/",
+    "title": "Consultan;mlxfcb l,v t Specialist",
+    "department_id": 1,
+    "specialization": "mk;llm;,",
+    "experience_years": 7,
+    "consultation_fee": 30,
+    "bio": "k,lm;k,mmklkn;m",
+    "avatar_url": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=400",
+    "available_days": [
+      "Monday",
+      "Wednesday",
+      "Friday"
+    ],
+    "is_active": true,
+    "created_at": "2026-11-05T12:24:09.472663+00:00",
+    "doctor_id": 1,
+    "department_name": "Cardiology"
+  }
+]

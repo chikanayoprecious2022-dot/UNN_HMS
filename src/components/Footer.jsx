@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import { Activity, Bot, PhoneCall, ShieldCheck, MapPin, Mail, Clock } from 'lucide-react';
 
@@ -55,24 +54,19 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/departments" className="hover:text-[#008080] transition-colors">
-                  Clinical Departments
-                </Link>
-              </li>
-              <li>
                 <Link to="/doctors" className="hover:text-[#008080] transition-colors">
                   Find Doctors
-                </Link>
-              </li>
-              <li>
-                <Link to="/book" className="hover:text-[#008080] transition-colors">
-                  Book Appointment
                 </Link>
               </li>
               <li>
                 <Link to="/ai-assistant" className="text-teal-400 hover:text-white flex items-center gap-1.5 font-medium">
                   <Bot className="w-3.5 h-3.5" />
                   <span>UNN AI Assistant</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/dashboard" className="hover:text-[#008080] transition-colors">
+                  Patient Dashboard
                 </Link>
               </li>
             </ul>

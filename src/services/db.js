@@ -268,7 +268,8 @@ export const INITIAL_APPOINTMENTS = [
 function loadFromStorage(key, fallback) {
   try {
     const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : fallback;
+    if (!item || item === 'null' || item === 'undefined') return fallback;
+    return JSON.parse(item);
   } catch {
     return fallback;
   }
@@ -303,9 +304,6 @@ export const db = {
     if (!localStorage.getItem(STORAGE_KEYS.AI_RECOMMENDATIONS)) {
       saveToStorage(STORAGE_KEYS.AI_RECOMMENDATIONS, []);
     }
-    if (!localStorage.getItem(STORAGE_KEYS.CURRENT_USER)) {
-      saveToStorage(STORAGE_KEYS.CURRENT_USER, INITIAL_USERS[0]); // default to Patient Sara Cole
-    }
   },
 
   resetAll() {
@@ -315,17 +313,21 @@ export const db = {
     saveToStorage(STORAGE_KEYS.SYMPTOM_MAPPINGS, INITIAL_SYMPTOM_MAPPINGS);
     saveToStorage(STORAGE_KEYS.APPOINTMENTS, INITIAL_APPOINTMENTS);
     saveToStorage(STORAGE_KEYS.AI_RECOMMENDATIONS, []);
-    saveToStorage(STORAGE_KEYS.CURRENT_USER, INITIAL_USERS[0]);
+    saveToStorage(STORAGE_KEYS.CURRENT_USER, null);
     return true;
   },
 
   // Users & Auth
   getCurrentUser() {
-    return loadFromStorage(STORAGE_KEYS.CURRENT_USER, INITIAL_USERS[0]);
+    return loadFromStorage(STORAGE_KEYS.CURRENT_USER, null);
   },
 
   setCurrentUser(user) {
     saveToStorage(STORAGE_KEYS.CURRENT_USER, user);
+  },
+
+  logout() {
+    saveToStorage(STORAGE_KEYS.CURRENT_USER, null);
   },
 
   switchUserByRole(role) {

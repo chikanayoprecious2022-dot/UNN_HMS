@@ -1,18 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useSearchParams, Link, useNavigate } from 'react-router-dom';
-import { db } from '../services/db';
+import { useState, useEffect, useRef } from 'react';
+import { useSearchParams, Link } from 'react-router-dom';
 import { aiEngine } from '../services/aiEngine';
 import {
   Bot,
   Send,
   AlertTriangle,
   CheckCircle2,
-  Calendar,
-  Clock,
-  Sparkles,
   ArrowRight,
-  RefreshCw,
-  User,
   PanelLeft,
   PanelLeftClose,
   Plus,
@@ -33,9 +27,9 @@ const INITIAL_GREETING = {
 export default function AiAssistantPage({ currentUser }) {
   const [searchParams] = useSearchParams();
   const initialQuery = searchParams.get('q') || searchParams.get('symptoms') || '';
-  const navigate = useNavigate();
 
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // Sidebar closed by default on mobile, open on desktop
+  const [sidebarOpen, setSidebarOpen] = useState(typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
 
   // Multi-session state in brand theme
   const [sessions, setSessions] = useState(() => {
@@ -79,12 +73,6 @@ export default function AiAssistantPage({ currentUser }) {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
-
-  useEffect(() => {
-    if (initialQuery) {
-      handleUserSubmit(initialQuery);
-    }
-  }, [initialQuery]);
 
   const quickStartPrompts = [
     'I have tooth pain and swollen gums.',
@@ -168,6 +156,12 @@ export default function AiAssistantPage({ currentUser }) {
     }, 500);
   };
 
+  useEffect(() => {
+    if (initialQuery) {
+      handleUserSubmit(initialQuery);
+    }
+  }, [initialQuery]);
+
   const processAiResponse = (userInput) => {
     const text = userInput.toLowerCase();
 
@@ -221,10 +215,10 @@ export default function AiAssistantPage({ currentUser }) {
         const dateToBook = parsed.date || '2026-11-23';
 
         const confirmationPayload = {
-          doctorId: parsed.doctor.doctor_id,
+          doctorId: parsed.doctor.doctor_id || parsed.doctor.id,
           doctorName: parsed.doctor.name,
           departmentId: parsed.doctor.department_id,
-          departmentName: db.getDepartmentById(parsed.doctor.department_id)?.name,
+          departmentName: parsed.doctor.department_name || 'General Clinic',
           date: dateToBook,
           time: timeToBook,
           reason: 'Symptom consultation',
@@ -263,10 +257,10 @@ export default function AiAssistantPage({ currentUser }) {
 
   const handleSelectSlot = (doctor, slotTime) => {
     const confirmationPayload = {
-      doctorId: doctor.doctor_id,
+      doctorId: doctor.doctor_id || doctor.id,
       doctorName: doctor.name,
       departmentId: doctor.department_id,
-      departmentName: db.getDepartmentById(doctor.department_id)?.name,
+      departmentName: doctor.department_name || 'General Clinic',
       date: '2026-11-23',
       time: slotTime,
       reason: 'Clinical appointment',
@@ -288,14 +282,23 @@ export default function AiAssistantPage({ currentUser }) {
 
   return (
     <div className="max-w-6xl mx-auto px-2 sm:px-4 py-4">
-      {/* Brand-Themed Chat Container (Teal #008080 + White + Clinical Surface #ebf1f1) */}
-      <div className="bg-white shadow-lg border border-[#008080]/20 rounded-2xl flex h-[calc(100vh-140px)] min-h-[580px] overflow-hidden">
-        
+      {/* Brand-Themed Chat Container */}
+      <div className="bg-white shadow-lg border border-[#008080]/20 rounded-2xl flex h-[calc(100vh-140px)] min-h-[500px] overflow-hidden relative">
+
+        {/* Mobile sidebar backdrop */}
+        {sidebarOpen && (
+          <div
+            className="md:hidden fixed inset-0 bg-slate-900/40 z-20"
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+
         {/* ================= SIDEBAR ================= */}
         <aside
           className={`${
-            sidebarOpen ? 'w-64 sm:w-72 translate-x-0' : 'w-0 -translate-x-full hidden md:flex md:w-0'
-          } bg-[#ebf1f1] text-slate-700 flex flex-col shrink-0 border-r border-[#008080]/20 transition-all duration-300`}
+            sidebarOpen ? 'flex' : 'hidden md:hidden'
+          } w-64 sm:w-72 bg-[#ebf1f1] text-slate-700 flex-col shrink-0 border-r border-[#008080]/20
+          absolute md:relative inset-y-0 left-0 z-30 md:z-auto transition-all duration-300`}
         >
           {/* New Chat Button */}
           <div className="p-3 border-b border-[#008080]/15">
@@ -349,19 +352,19 @@ export default function AiAssistantPage({ currentUser }) {
           {/* Patient Profile Card */}
           <div className="p-3 border-t border-[#008080]/15 bg-white flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-full bg-[#008080] text-white flex items-center justify-center font-bold text-xs shrink-0">
-              {currentUser?.name?.charAt(0) || 'S'}
+              {currentUser?.name?.charAt(0) || 'P'}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-xs font-bold text-slate-900 truncate">{currentUser?.name || 'Sara Cole'}</p>
-              <Link to="/my-appointments" className="text-[10px] text-[#008080] font-semibold hover:underline block">
-                View My Appointments →
+              <p className="text-xs font-bold text-slate-900 truncate">{currentUser?.name || 'Patient'}</p>
+              <Link to="/dashboard" className="text-[10px] text-[#008080] font-semibold hover:underline block">
+                Go to Dashboard →
               </Link>
             </div>
           </div>
         </aside>
 
         {/* ================= MAIN CHAT ================= */}
-        <div className="flex-1 flex flex-col min-w-0 bg-white">
+        <div className="flex-1 flex flex-col min-w-0 bg-white overflow-hidden">
           {/* Header */}
           <div className="h-13 border-b border-[#008080]/15 px-4 flex items-center justify-between bg-white shrink-0">
             <div className="flex items-center gap-2 min-w-0">
@@ -378,10 +381,10 @@ export default function AiAssistantPage({ currentUser }) {
             </div>
 
             <Link
-              to="/my-appointments"
+              to="/dashboard"
               className="text-xs font-bold text-[#008080] hover:underline flex items-center gap-1"
             >
-              <span>My Appointments</span>
+              <span>Dashboard</span>
               <ArrowRight className="w-3 h-3" />
             </Link>
           </div>
@@ -514,10 +517,10 @@ export default function AiAssistantPage({ currentUser }) {
                           <strong>{msg.appointment.appointment_date} at {msg.appointment.appointment_time}</strong>.
                         </p>
                         <Link
-                          to="/my-appointments"
+                          to="/dashboard"
                           className="inline-flex items-center gap-1 px-3 py-1.5 bg-[#008080] text-white rounded-lg font-bold text-xs hover:bg-[#006666]"
                         >
-                          <span>View in My Appointments</span>
+                          <span>View in Dashboard</span>
                           <ArrowRight className="w-3 h-3" />
                         </Link>
                       </div>
@@ -544,8 +547,8 @@ export default function AiAssistantPage({ currentUser }) {
           </div>
 
           {/* Quick Prompts */}
-          <div className="px-4 py-2 bg-white border-t border-[#008080]/15 shrink-0 overflow-x-auto whitespace-nowrap">
-            <div className="max-w-2xl mx-auto flex items-center gap-2">
+          <div className="px-3 sm:px-4 py-2 bg-white border-t border-[#008080]/15 shrink-0 overflow-x-auto">
+            <div className="flex items-center gap-2 min-w-max sm:min-w-0 sm:flex-wrap">
               <span className="text-[10px] font-bold text-[#008080] uppercase tracking-wider shrink-0">
                 Quick:
               </span>

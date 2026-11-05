@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bot, X, Sparkles, AlertTriangle, ArrowRight, Send, CheckCircle2 } from 'lucide-react';
+import { Bot, X, Sparkles, AlertTriangle, ArrowRight, Send } from 'lucide-react';
 import { aiEngine } from '../services/aiEngine';
 
 export default function FloatingAiWidget() {
